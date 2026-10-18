@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>HSI Solutions — Concept A: Prairie Glass</title>
+  <meta name="description" content="HSI Solutions — Strengthening rural healthcare communities across the Northern Plains since 1963. Concept preview only." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="./hero.jpg" />
+  <link rel="preload" as="image" href="images/hero.jpg" />
+  <style>
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-padding-top: 80px;
+      overflow-y: scroll;
+      font-family: 'Inter', sans-serif;
+    }
+    body { background: #0a1628; color: #fff; }
+
+    :root {
+      --blue: #2356a6;
+      --blue-dark: #1a3f7a;
+      --blue-light: #3a6fc4;
+      --sand: #e6dfd6;
+      --white: #ffffff;
+      --navy: #0a1628;
+      --glass-bg: rgba(255,255,255,0.08);
+      --glass-border: rgba(255,255,255,0.15);
+      --glass-bg-strong: rgba(10,22,40,0.55);
+    }
+
+    /* =============================================
+       SCROLL SECTIONS
+    ============================================= */
+    .section {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      /* Push content below fixed navbar (≈80px) and above preview badge (≈40px) */
+      padding-top: 80px;
+      padding-bottom: 48px;
+    }
+    .section-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: scale(1.06);
+      transition: transform 0.8s ease;
+      z-index: 0;
+    }
+    .section.active .section-bg { transform: scale(1.0); }
+    .section-overlay { position: absolute; inset: 0; z-index: 1; }
+    .section-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1200px;
+      padding: 0 2rem;
+    }
+
+    /* =============================================
+       GLASSMORPHISM
+    ============================================= */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2.5rem 3rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    /* =============================================
+       NAVBAR
+    ============================================= */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.3s ease;
+    }
+    #navbar.scrolled {
+      background: rgba(10,22,40,0.90);
+      backdrop-filter: blur(16px);
+      padding: 0.8rem 3rem;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 42px; height: 42px;
+      background: var(--blue);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      flex-shrink: 0;
+    }
+    .nav-logo-text .brand { font-weight: 600; font-size: 1rem; color: #fff; letter-spacing: 0.05em; display: block; }
+    .nav-logo-text .tagline { font-size: 0.65rem; color: var(--sand); letter-spacing: 0.1em; text-transform: uppercase; display: block; }
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sand); }
+    .nav-cta {
+      background: var(--blue) !important;
+      color: #fff !important;
+      padding: 0.55rem 1.4rem !important;
+      border-radius: 8px;
+      font-weight: 600 !important;
+    }
+    .nav-cta:hover { background: var(--blue-light) !important; transform: translateY(-1px); }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-hamburger span { width: 24px; height: 2px; background: #fff; border-radius: 2px; display: block; }
+
+    /* =============================================
+       DOT NAVIGATION
+    ============================================= */
+    #dot-nav {
+      position: fixed;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      border: 2px solid rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .dot::after {
+      content: attr(data-label);
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10,22,40,0.85);
+      color: var(--sand);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding: 4px 10px;
+      border-radius: 4px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .dot:hover::after { opacity: 1; }
+    .dot.active {
+      background: var(--blue);
+      border-color: var(--blue-light);
+      width: 13px; height: 13px;
+      box-shadow: 0 0 12px rgba(35,86,166,0.8);
+    }
+
+    /* =============================================
+       MOBILE MENU
+    ============================================= */
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,22,40,0.97);
+      backdrop-filter: blur(20px);
+      z-index: 1100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    #mobile-menu a:hover { color: var(--sand); }
+    #close-menu-btn {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: rgba(255,255,255,0.7);
+      background: none;
+      border: none;
+    }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--blue-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(35,86,166,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.5);
+      padding: 0.9rem 2rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s, color 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: var(--sand);
+      color: var(--sand);
+      background: rgba(230,223,214,0.1);
+      transform: translateY(-2px);
+    }
+
+    /* =============================================
+       LABELS & TITLES
+    ============================================= */
+    .section-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
+    }
+
+    /* =============================================
+       FADE UP ANIMATION
+    ============================================= */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+
+    /* ============================================= */
+    /* SECTION 1: HERO */
+    /* ============================================= */
+    #hero { padding-top: 120px; }
+    #hero .section-bg {
+      background-image: url('hero.jpg'), url('images/hero.jpg');
+      background-position: center 40%;
+    }
+    #hero .section-overlay {
+      background: linear-gradient(135deg, rgba(10,22,40,0.75) 0%, rgba(35,86,166,0.38) 50%, rgba(10,22,40,0.62) 100%);
+    }
+    .hero-inner { display: flex; flex-direction: column; align-items: flex-start; max-width: 680px; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(35,86,166,0.28);
+      border: 1px solid rgba(35,86,166,0.55);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 1.2rem;
+    }
+    .hero-badge .dot-live {
+      width: 6px; height: 6px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: pulse-green 2s infinite;
+    }
+    @keyframes pulse-green {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4.2vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    .hero-title .accent { color: var(--sand); }
+    .hero-subtitle {
+      font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+      color: rgba(255,255,255,0.82);
+      line-height: 1.75;
+      margin-bottom: 2rem;
+      max-width: 520px;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 3;
+      animation: bounce 2.5s infinite;
+    }
+    .hero-scroll-hint::after {
+      content: '';
+      width: 1px; height: 38px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(7px); }
+    }
+
+    /* ============================================= */
+    /* SECTION 2: ABOUT */
+    /* ============================================= */
+    #about .section-bg {
+      background-image: url('about.jpg'), url('images/about.jpg');
+    }
+    #about .section-overlay { background: linear-gradient(to right, rgba(10,22,40,0.90) 40%, rgba(10,22,40,0.48) 100%); }
+    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-left h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700; color: #fff; margin-bottom: 1.5rem; line-height: 1.2; }
+    .about-left p { color: rgba(255,255,255,0.80); line-height: 1.8; font-size: 0.97rem; margin-bottom: 1rem; }
+    .about-left p strong { color: var(--sand); }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .stat-card {
+      background: rgba(35,86,166,0.18);
+      border: 1px solid rgba(35,86,166,0.38);
+      border-radius: 12px;
+      padding: 1.2rem;
+      text-align: center;
+    }
+    .stat-card .num { font-family: 'Playfair Display', serif; font-size: 2.1rem; font-weight: 700; color: var(--sand); line-height: 1; }
+    .stat-card .num.small { font-size: 1.1rem; line-height: 1.4; }
+    .stat-card .lbl { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-top: 0.35rem; letter-spacing: 0.04em; }
+
+    /* ============================================= */
+    /* SECTION 3: SERVICES */
+    /* ============================================= */
+    #services .section-bg {
+      background-image: url('services.jpg'), url('images/services.jpg');
+    }
+    #services .section-overlay { background: linear-gradient(to bottom, rgba(10,22,40,0.82) 0%, rgba(10,22,40,0.68) 100%); }
+    .services-inner { text-align: center; width: 100%; }
+    .section-subtitle { color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 2.5rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    .service-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 2rem 1.5rem;
+      text-align: left;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      border-color: rgba(35,86,166,0.5);
+    }
+    .service-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-light));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.2rem;
+      font-size: 1.4rem;
+    }
+    .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.08rem; font-weight: 600; color: #fff; margin-bottom: 0.75rem; line-height: 1.3; }
+    .service-card p { font-size: 0.84rem; color: rgba(255,255,255,0.72); line-height: 1.7; }
+    .service-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 600; color: var(--sand);
+      text-decoration: none; margin-top: 1rem;
+      transition: gap 0.2s;
+    }
+    .service-link:hover { gap: 0.7rem; }
+    .vizient-tag {
+      display: inline-block;
+      background: rgba(35,86,166,0.28);
+      border: 1px solid rgba(35,86,166,0.55);
+      border-radius: 6px;
+      padding: 0.25rem 0.7rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--sand);
+      margin-top: 0.6rem;
+    }
+
+    /* ============================================= */
+    /* SECTION 4: PARTNERS */
+    /* ============================================= */
+    #partners .section-bg {
+      background-image: url('prairie.jpg'), url('images/prairie.jpg');
+    }
+    #partners .section-overlay { background: linear-gradient(to bottom right, rgba(10,22,40,0.92) 0%, rgba(35,86,166,0.55) 100%); }
+    .partners-inner { text-align: center; }
+    .partners-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
+    .partners-inner .lead { color: rgba(255,255,255,0.74); font-size: 1rem; max-width: 600px; margin: 0 auto 3rem; line-height: 1.8; }
+    .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+    .partner-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 2rem 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .partner-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+    .partner-card .p-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .partner-card h4 { font-size: 1rem; font-weight: 600; color: var(--sand); margin-bottom: 0.5rem; }
+    .partner-card p { font-size: 0.82rem; color: rgba(255,255,255,0.7); line-height: 1.65; }
+    .placeholder-note { font-size: 0.78rem; color: rgba(255,255,255,0.4); font-style: italic; margin-top: 2rem; }
+
+    /* ============================================= */
+    /* SECTION 5: BOARD */
+    /* ============================================= */
+    #board .section-bg {
+      background-image: url('team.jpg'), url('images/team.jpg');
+    }
+    #board .section-overlay { background: linear-gradient(to left, rgba(10,22,40,0.90) 40%, rgba(10,22,40,0.52) 100%); }
+    .board-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: center; }
+    .board-left h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700; color: #fff; margin-bottom: 1rem; line-height: 1.2; }
+    .board-left p { color: rgba(255,255,255,0.74); line-height: 1.8; font-size: 0.95rem; }
+    .board-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+    .board-member {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      display: flex; align-items: center; gap: 0.85rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .board-member:hover { transform: translateX(4px); border-color: rgba(35,86,166,0.5); }
+    .board-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--blue-light));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; color: #fff;
+      flex-shrink: 0;
+    }
+    .board-info .name { font-size: 0.87rem; font-weight: 600; color: #fff; line-height: 1.2; }
+    .board-info .role { font-size: 0.72rem; color: var(--sand); margin-top: 0.15rem; opacity: 0.85; }
+    .board-note { font-size: 0.74rem; color: rgba(255,255,255,0.38); font-style: italic; margin-top: 1rem; }
+
+    /* ============================================= */
+    /* SECTION 6: CONTACT */
+    /* ============================================= */
+    #contact .section-bg {
+      background-image: url('prairie.jpg'), url('images/prairie.jpg');
+      background-position: center 70%;
+    }
+    #contact .section-overlay { background: linear-gradient(to bottom, rgba(10,22,40,0.94) 0%, rgba(10,22,40,0.82) 100%); }
+    .contact-inner { text-align: center; }
+    .contact-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
+    .contact-inner .lead { color: rgba(255,255,255,0.72); font-size: 1rem; margin: 0 auto 3rem; max-width: 540px; line-height: 1.8; }
+    .contact-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 860px; margin: 0 auto 2.5rem; }
+    .contact-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 2rem 1.5rem;
+      transition: transform 0.3s;
+    }
+    .contact-card:hover { transform: translateY(-4px); }
+    .contact-card .c-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .contact-card h4 { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sand); margin-bottom: 0.5rem; }
+    .contact-card p { font-size: 0.93rem; color: rgba(255,255,255,0.82); line-height: 1.65; }
+    .contact-card a { font-size: 0.93rem; color: rgba(255,255,255,0.82); text-decoration: none; display: block; line-height: 1.65; }
+    .contact-card a:hover { color: var(--sand); }
+    .contact-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ============================================= */
+    /* PREVIEW BADGE */
+    /* ============================================= */
+    #preview-badge {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 2000;
+      background: rgba(35,86,166,0.93);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      padding: 0.55rem 1rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.06em;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    #preview-badge strong { color: var(--sand); }
+
+    /* ============================================= */
+    /* RESPONSIVE */
+    /* ============================================= */
+    @media (max-width: 960px) {
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .board-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .partners-grid { grid-template-columns: 1fr 1fr; }
+      #dot-nav { display: none; }
+      /* Slightly reduce padding on tablet to avoid content overflow */
+      .section { padding-top: 72px; padding-bottom: 44px; }
+    }
+    @media (max-width: 640px) {
+      #navbar { padding: 1rem 1.25rem; }
+      #navbar.scrolled { padding: 0.7rem 1.25rem; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .section-content { padding: 0 1.25rem; }
+      .section { padding-top: 68px; padding-bottom: 42px; }
+      .hero-title { font-size: 2.2rem; }
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-outline { text-align: center; justify-content: center; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .services-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .board-grid { grid-template-columns: 1fr; }
+      .partners-grid { grid-template-columns: 1fr; }
+      .contact-cards { grid-template-columns: 1fr; }
+      .contact-actions { flex-direction: column; align-items: center; }
+      .glass-card { padding: 1.5rem 1.25rem; }
+      .board-left { margin-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <a href="#hero" class="nav-logo" aria-label="HSI Solutions Home">
+    <div class="nav-logo-icon">HSI</div>
+    <div class="nav-logo-text">
+      <span class="brand">HSI Solutions</span>
+      <span class="tagline">Healthcare Services Inc.</span>
+    </div>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#about" id="nav-about">About</a></li>
+    <li><a href="#services" id="nav-services">Services</a></li>
+    <li><a href="#partners" id="nav-partners">Partners</a></li>
+    <li><a href="#board" id="nav-board">Leadership</a></li>
+    <li><a href="#contact" id="nav-contact">Contact</a></li>
+    <li><a href="tel:+17012249439" class="nav-cta" id="nav-pay-bill">Pay a Bill</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger-btn" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+  <button id="close-menu-btn" aria-label="Close menu">&#10005;</button>
+  <a href="#hero" class="mm-link">Home</a>
+  <a href="#about" class="mm-link">About</a>
+  <a href="#services" class="mm-link">Services</a>
+  <a href="#partners" class="mm-link">Partners</a>
+  <a href="#board" class="mm-link">Leadership</a>
+  <a href="#contact" class="mm-link">Contact</a>
+  <a href="tel:+17012249439" style="color:var(--sand)!important">Pay a Bill</a>
+</div>
+
+<!-- DOT NAV -->
+<nav id="dot-nav" aria-label="Section navigation">
+  <div class="dot active" data-section="hero" data-label="Home" tabindex="0" role="button" aria-label="Go to Home"></div>
+  <div class="dot" data-section="about" data-label="About" tabindex="0" role="button" aria-label="Go to About"></div>
+  <div class="dot" data-section="services" data-label="Services" tabindex="0" role="button" aria-label="Go to Services"></div>
+  <div class="dot" data-section="partners" data-label="Partners" tabindex="0" role="button" aria-label="Go to Partners"></div>
+  <div class="dot" data-section="board" data-label="Leadership" tabindex="0" role="button" aria-label="Go to Leadership"></div>
+  <div class="dot" data-section="contact" data-label="Contact" tabindex="0" role="button" aria-label="Go to Contact"></div>
+</nav>
+
+<!-- =================== HERO =================== -->
+<section class="section active" id="hero" aria-label="Hero">
+  <div class="section-bg"></div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="dot-live"></span>
+        Serving Rural Healthcare Since 1963
+      </div>
+      <h1 class="hero-title">
+        Strengthening<br />
+        Rural Communities<br />
+        Across the <span class="accent">Northern Plains</span>
+      </h1>
+      <p class="hero-subtitle">
+        HSI Solutions partners with community hospitals and rural health systems to deliver specialized financial, supply chain, and peer review services — so providers can focus on what matters most: patient care.
+      </p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-primary" id="hero-explore-btn">
+          Explore Our Services
+          <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="tel:+17012249439" class="btn-outline" id="hero-pay-btn">Pay a Bill</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true">Scroll</div>
+</section>
+
+<!-- =================== ABOUT =================== -->
+<section class="section" id="about" aria-label="About HSI Solutions">
+  <div class="section-bg"></div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="about-inner">
+      <div class="about-left fade-up">
+        <span class="section-label">Our Story</span>
+        <h2>Six Decades of<br />Trusted Service</h2>
+        <p>
+          Founded in <strong>1963</strong>, HSI Solutions has grown into a comprehensive healthcare services organization dedicated to the long-term viability of rural hospitals and clinics across the Northern Plains.
+        </p>
+        <p>
+          Based in Bismarck, North Dakota, we serve members across North Dakota, South Dakota, Montana, and Minnesota — delivering specialized expertise that small hospitals cannot afford to maintain on their own.
+        </p>
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="num">1963</div>
+            <div class="lbl">Year Founded</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">4</div>
+            <div class="lbl">Core Services</div>
+          </div>
+          <div class="stat-card">
+            <div class="num small">ND · SD<br />MT · MN</div>
+            <div class="lbl">States Served</div>
+          </div>
+          <div class="stat-card">
+            <div class="num small">[HSI<br />supply]</div>
+            <div class="lbl">Member Hospitals</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-right fade-up d1">
+        <div class="glass-card">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;margin-bottom:1rem;font-weight:600;">Our Mission</h3>
+          <p style="color:rgba(255,255,255,0.82);line-height:1.8;font-size:0.95rem;">
+            To strengthen and support rural healthcare communities by providing accessible, specialized services that improve financial performance, operational efficiency, and quality of care.
+          </p>
+          <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.12);">
+            <p style="color:rgba(255,255,255,0.65);font-size:0.83rem;line-height:1.7;">
+              <strong style="color:var(--sand);display:block;margin-bottom:0.25rem;">Bismarck, North Dakota</strong>
+              1622 E Interstate Ave &bull; PO Box 7340<br />
+              Bismarck, ND 58503
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SERVICES =================== -->
+<section class="section" id="services" aria-label="Our Services">
+  <div class="section-bg"></div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="services-inner">
+      <span class="section-label">What We Do</span>
+      <h2 class="section-title">Four Core Services</h2>
+      <p class="section-subtitle">Specialized expertise built for rural healthcare systems.</p>
+      <div class="services-grid">
+
+        <div class="service-card fade-up">
+          <div class="service-icon">&#127973;</div>
+          <h3>Medical Collections</h3>
+          <p>Compassionate, compliant patient account receivables management designed specifically for rural and critical access hospitals.</p>
+          <a href="#contact" class="service-link" id="service-collections-link">
+            Learn More
+            <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <div class="service-card fade-up d1">
+          <div class="service-icon">&#128279;</div>
+          <h3>Supply Chain Optimization</h3>
+          <p>Leverage collective purchasing power through our Group Purchasing Organization membership to reduce supply costs and strengthen your bottom line.</p>
+          <div class="vizient-tag">Vizient GPO Member</div>
+          <a href="#contact" class="service-link" id="service-supply-link">
+            Learn More
+            <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <div class="service-card fade-up d2">
+          <div class="service-icon">&#9877;</div>
+          <h3>Peer Review Network</h3>
+          <p>Confidential, qualified peer review services connecting rural physicians for independent clinical quality assessments across the region.</p>
+          <a href="#contact" class="service-link" id="service-peer-link">
+            Learn More
+            <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <div class="service-card fade-up d3">
+          <div class="service-icon">&#129309;</div>
+          <h3>Strategic Partner Program</h3>
+          <p>A pre-vetted portfolio of trusted vendors — thoroughly screened for operational excellence — so you only work with partners we stand behind.</p>
+          <a href="#contact" class="service-link" id="service-partner-link">
+            Learn More
+            <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== PARTNERS =================== -->
+<section class="section" id="partners" aria-label="Partners and Affiliations">
+  <div class="section-bg"></div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="partners-inner">
+      <span class="section-label">Our Network</span>
+      <h2>Trusted Partners &amp; Affiliations</h2>
+      <p class="lead">
+        We collaborate with best-in-class organizations to deliver unrivaled value to our member hospitals — from group purchasing to technology vendors.
+      </p>
+      <div class="partners-grid">
+        <div class="partner-card fade-up">
+          <div class="p-icon">&#128230;</div>
+          <h4>Vizient GPO</h4>
+          <p>Group Purchasing Organization delivering collective buying power and supply chain solutions to healthcare systems nationwide.</p>
+        </div>
+        <div class="partner-card fade-up d1">
+          <div class="p-icon">&#127760;</div>
+          <h4>Strategic Vendors</h4>
+          <p>Every vendor in our Strategic Partner Program is thoroughly vetted for operational excellence, compliance, and member value.</p>
+        </div>
+        <div class="partner-card fade-up d2">
+          <div class="p-icon">&#127963;</div>
+          <h4>Regional Health Systems</h4>
+          <p>Collaborating with member hospitals across North Dakota, South Dakota, Montana, and Minnesota to strengthen rural care access.</p>
+        </div>
+      </div>
+      <p class="placeholder-note">[HSI to supply: full partner logo list and member count]</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== BOARD =================== -->
+<section class="section" id="board" aria-label="Leadership and Board of Directors">
+  <div class="section-bg"></div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="board-inner">
+      <div class="board-left fade-up">
+        <span class="section-label">Our People</span>
+        <h2>Leadership &amp;<br />Board of Directors</h2>
+        <p>
+          Guided by experienced healthcare administrators, executives, and community leaders committed to the long-term viability of rural health systems across the Northern Plains.
+        </p>
+        <div style="margin-top:1.75rem;">
+          <a href="#contact" class="btn-primary" id="board-contact-btn">Get In Touch</a>
+        </div>
+      </div>
+      <div class="board-right fade-up d1">
+        <div class="board-grid">
+          <div class="board-member">
+            <div class="board-avatar">RF</div>
+            <div class="board-info">
+              <div class="name">Rob Field</div>
+              <div class="role">[HSI to supply: title]</div>
+            </div>
+          </div>
+          <div class="board-member">
+            <div class="board-avatar">DB</div>
+            <div class="board-info">
+              <div class="name">DeAnn Berreth</div>
+              <div class="role">[HSI to supply: title]</div>
+            </div>
+          </div>
+          <div class="board-member">
+            <div class="board-avatar">BD</div>
+            <div class="board-info">
+              <div class="name">[HSI to supply]</div>
+              <div class="role">Board Director</div>
+            </div>
+          </div>
+          <div class="board-member">
+            <div class="board-avatar">BD</div>
+            <div class="board-info">
+              <div class="name">[HSI to supply]</div>
+              <div class="role">Board Director</div>
+            </div>
+          </div>
+          <div class="board-member">
+            <div class="board-avatar">BD</div>
+            <div class="board-info">
+              <div class="name">[HSI to supply]</div>
+              <div class="role">Board Director</div>
+            </div>
+          </div>
+          <div class="board-member">
+            <div class="board-avatar">BD</div>
+            <div class="board-info">
+              <div class="name">[HSI to supply]</div>
+              <div class="role">Board Director</div>
+            </div>
+          </div>
+        </div>
+        <p class="board-note">* Full board names and titles to be confirmed by HSI Solutions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== CONTACT =================== -->
+<section class="section" id="contact" aria-label="Contact HSI Solutions">
+  <div class="section-bg"></div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="contact-inner">
+      <span class="section-label">Reach Us</span>
+      <h2>Let's Work Together</h2>
+      <p class="lead">Ready to learn how HSI Solutions can support your hospital? Our team is here to answer your questions and guide you through our services.</p>
+      <div class="contact-cards">
+        <div class="contact-card fade-up">
+          <div class="c-icon">&#128205;</div>
+          <h4>Address</h4>
+          <p>1622 E Interstate Ave<br />PO Box 7340<br />Bismarck, ND 58503</p>
+        </div>
+        <div class="contact-card fade-up d1">
+          <div class="c-icon">&#128222;</div>
+          <h4>Phone</h4>
+          <a href="tel:+17012249439" id="contact-phone-link">(701) 224-9439</a>
+          <a href="tel:+18004420462" id="contact-tollfree-link" style="font-size:0.85rem;margin-top:0.3rem;opacity:0.72;">Toll Free: 1-800-442-0462</a>
+        </div>
+        <div class="contact-card fade-up d2">
+          <div class="c-icon">&#127760;</div>
+          <h4>Online</h4>
+          <a href="https://hsisolutions.org" target="_blank" rel="noopener noreferrer" id="contact-website-link">hsisolutions.org</a>
+          <p style="font-size:0.8rem;margin-top:0.5rem;opacity:0.5;">[HSI to supply: email]</p>
+        </div>
+      </div>
+      <div class="contact-actions">
+        <a href="tel:+17012249439" class="btn-primary" id="contact-pay-bill-btn">Pay a Bill</a>
+        <a href="https://hsisolutions.org" target="_blank" rel="noopener noreferrer" class="btn-outline" id="contact-visit-btn">Visit Live Site</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREVIEW BADGE -->
+<div id="preview-badge" role="note" aria-label="Preview notice">
+  &#9888; <strong>Concept preview, not the live site.</strong> &mdash; Design proposal for HSI Solutions. Not indexed by search engines.
+</div>
+
+<script>
+  'use strict';
+  const SECTIONS = ['hero','about','services','partners','board','contact'];
+  const dots = document.querySelectorAll('.dot');
+  const navbar = document.getElementById('navbar');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  /* Dot nav click */
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      document.getElementById(dot.dataset.section).scrollIntoView({ behavior: 'smooth' });
+    });
+    dot.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        document.getElementById(dot.dataset.section).scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* Intersection observer */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      dots.forEach(d => d.classList.toggle('active', d.dataset.section === id));
+      document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === id));
+      navbar.classList.toggle('scrolled', id !== 'hero');
+      entry.target.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
+    });
+  }, { threshold: 0.38 });
+
+  SECTIONS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+
+  /* Mobile menu */
+  document.getElementById('hamburger-btn').addEventListener('click', () => mobileMenu.classList.add('open'));
+  document.getElementById('close-menu-btn').addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mm-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  /* Hero visible on load */
+  document.querySelectorAll('#hero .fade-up').forEach(el => el.classList.add('visible'));
+
+  /* Smart Image Fallback: If deployed without the local images/ folder, load CDN healthcare imagery */
+  (function() {
+    const probe = new Image();
+    probe.onerror = function() {
+      const cdnMap = {
+        '#hero .section-bg': 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=2000&q=80',
+        '#about .section-bg': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=2000&q=80',
+        '#services .section-bg': 'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=2000&q=80',
+        '#partners .section-bg': 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2000&q=80',
+        '#board .section-bg': 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=80',
+        '#contact .section-bg': 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2000&q=80'
+      };
+      Object.keys(cdnMap).forEach(function(sel) {
+        const el = document.querySelector(sel);
+        if (el) el.style.backgroundImage = "url('" + cdnMap[sel] + "')";
+      });
+    };
+    probe.src = 'images/hero.jpg';
+  })();
+</script>
+</body>
+</html>

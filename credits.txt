@@ -1,0 +1,33 @@
+CONCEPT A — PRAIRIE GLASS
+HSI Solutions Website Redesign Concept
+Design Proposal by Amit Marwaha
+-------------------------------------------
+
+PHOTO CREDITS
+All photographs used in this concept prototype were generated
+using Google Gemini AI image generation for demonstration purposes only.
+They are NOT licensed for commercial use.
+
+Before publishing to a live or production website, all AI-generated
+images must be replaced with either:
+  (a) Licensed stock photography from Unsplash, Pexels, or Shutterstock
+  (b) Real photography provided by HSI Solutions
+
+IMAGES USED:
+- images/hero.jpg     : Rural community hospital exterior at sunset (AI generated)
+- images/about.jpg    : Medical office reception interior (AI generated)
+- images/prairie.jpg  : Aerial North Dakota prairie landscape at dusk (AI generated)
+- images/services.jpg : Healthcare administrator at desk (AI generated)
+- images/team.jpg     : Corporate boardroom with prairie view (AI generated)
+
+-------------------------------------------
+FONTS:
+- Playfair Display — Google Fonts (Open Font License)
+  https://fonts.google.com/specimen/Playfair+Display
+- Inter — Google Fonts (Open Font License)
+  https://fonts.google.com/specimen/Inter
+
+-------------------------------------------
+NOTE: This is a CONCEPT PREVIEW, not the live site.
+Meta tag noindex is included. Do not index this page.
+-------------------------------------------
